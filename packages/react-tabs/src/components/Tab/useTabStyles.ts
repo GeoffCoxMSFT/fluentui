@@ -40,6 +40,9 @@ const useRootStyles = makeStyles({
     position: 'relative',
     ...shorthands.overflow('hidden'),
     textTransform: 'none',
+    flexGrow: 0,
+    flexShrink: 0,
+    flexBasis: 'auto',
   },
   mediumHorizontal: {
     columnGap: pendingSpacingTokens.sNudge,
