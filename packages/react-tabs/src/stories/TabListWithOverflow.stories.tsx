@@ -47,6 +47,7 @@ const useStyles = makeStyles({
     minWidth: '150px',
     resize: 'horizontal',
     width: '600px',
+    zIndex: 0, //stop the resize handle from peeking through the menu
   },
   vertical: {
     boxSizing: 'border-box',
@@ -54,6 +55,7 @@ const useStyles = makeStyles({
     minHeight: '100px',
     resize: 'vertical',
     width: 'fit-content',
+    zIndex: 0, //stop the resize handle from peeking through the menu
   },
   tabText: {
     whiteSpace: 'nowrap',
