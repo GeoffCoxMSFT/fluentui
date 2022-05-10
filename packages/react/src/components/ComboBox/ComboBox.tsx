@@ -28,6 +28,7 @@ import { Label } from '../../Label';
 import { SelectableOptionMenuItemType, getAllSelectedOptions } from '../../SelectableOption';
 import { BaseButton, Button, CommandButton, IconButton } from '../../Button';
 import { useMergedRefs } from '@fluentui/react-hooks';
+import { getChildren } from '@fluentui/utilities';
 import type { IAutofill } from '../../Autofill';
 import type { IRenderFunction } from '../../Utilities';
 import type { IComboBoxClassNames } from './ComboBox.classNames';
@@ -40,7 +41,6 @@ import type {
 } from './ComboBox.types';
 import type { IButtonStyles } from '../../Button';
 import type { ICalloutProps } from '../../Callout';
-import { getChildren } from '@fluentui/utilities';
 
 export interface IComboBoxState {
   /** The open state */
