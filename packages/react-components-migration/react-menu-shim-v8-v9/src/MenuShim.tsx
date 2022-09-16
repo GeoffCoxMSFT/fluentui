@@ -16,7 +16,7 @@ import {
   MenuItemCheckboxProps,
   MenuProps,
   MenuDividerProps,
-} from '@fluentui/react-components';
+} from '@fluentui/react-menu';
 
 export const shimMenuProps = (props: IContextualMenuProps): Partial<MenuProps> => {
   return {

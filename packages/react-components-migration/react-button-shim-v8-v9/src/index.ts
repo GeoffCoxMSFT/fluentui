@@ -1,2 +1,11 @@
 // TODO: replace with real exports
-export {};
+export {
+  ButtonShim,
+  ActionButtonShim,
+  CommandButtonShim,
+  CompoundButtonShim,
+  DefaultButtonShim,
+  MenuButtonShim,
+  PrimaryButtonShim,
+  ToggleButtonShim,
+} from './ButtonShim';

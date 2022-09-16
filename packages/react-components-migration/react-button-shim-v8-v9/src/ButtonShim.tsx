@@ -7,16 +7,13 @@ import {
   ButtonProps,
   CompoundButton,
   CompoundButtonProps,
-  Menu,
   MenuButton,
   MenuButtonProps,
-  MenuList,
-  MenuPopover,
-  MenuTrigger,
   ToggleButton,
   ToggleButtonProps,
-} from '@fluentui/react-components';
-import { MenuItemShim, shimMenuProps } from './MenuShim';
+} from '@fluentui/react-button';
+import { Menu, MenuList, MenuPopover, MenuTrigger } from '@fluentui/react-menu';
+import { MenuItemShim, shimMenuProps } from '@fluentui/react-menu-shim-v8-v9';
 
 const shimButtonProps = (props: IBaseButtonProps & React.RefAttributes<HTMLButtonElement>): ButtonProps => {
   //TODO: Icon shim. This still renders the v8 icon.
