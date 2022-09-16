@@ -38,6 +38,8 @@ export const parameters = {
         ],
         'Theme',
         'Components',
+        'Preview Components',
+        'Migration Shims',
       ],
     },
   },

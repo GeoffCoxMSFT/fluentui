@@ -1,5 +1,5 @@
-/* eslint-disable no-alert */
 import * as React from 'react';
+
 import {
   ContextualMenuItemType,
   DefaultButton,
@@ -9,25 +9,47 @@ import {
   IIconProps,
 } from '@fluentui/react';
 import {
-  webLightTheme,
   FluentProvider,
+  webLightTheme,
+  makeStyles,
+  shorthands,
   Menu,
-  MenuTrigger,
   MenuButton,
-  MenuPopover,
-  MenuList,
-  MenuItem,
   MenuDivider,
+  MenuItem,
   MenuItemCheckbox,
+  MenuList,
+  MenuPopover,
+  MenuTrigger,
 } from '@fluentui/react-components';
 import { MenuButtonShim } from '@fluentui/react-button-shim-v8-v9';
+
+const useStyles = makeStyles({
+  root: {
+    display: 'grid',
+    gridTemplateColumns: 'auto auto auto',
+    gridTemplateRows: '1fr',
+    width: 'fit-content',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyItems: 'center',
+    columnGap: '10px',
+    rowGap: '10px',
+  },
+  componentName: {
+    justifySelf: 'end',
+    ...shorthands.margin(0, '10px', 0, 0),
+  },
+});
 
 const addIcon: IIconProps = { iconName: 'Add' };
 const mailIcon: IIconProps = { iconName: 'Mail' };
 const calendarIcon: IIconProps = { iconName: 'Calendar' };
 const shareIcon: IIconProps = { iconName: 'Share', style: { color: 'salmon' } };
 
-export const MenuButtonShimExample = () => {
+export const Default = () => {
+  const styles = useStyles();
+
   const [selection, setSelection] = React.useState<{ [key: string]: boolean }>({});
 
   const onToggleSelect = React.useCallback(
@@ -116,7 +138,10 @@ export const MenuButtonShimExample = () => {
   };
 
   return (
-    <>
+    <div className={styles.root}>
+      <h3>v8</h3>
+      <h3>shim</h3>
+      <h3>v9</h3>
       <DefaultButton text="Menu Button" menuProps={menuProps} />
       <FluentProvider theme={webLightTheme}>
         <MenuButtonShim text="Menu Button" menuProps={menuProps} />
@@ -153,6 +178,8 @@ export const MenuButtonShimExample = () => {
           </MenuPopover>
         </Menu>
       </FluentProvider>
-    </>
+    </div>
   );
 };
+
+Default.storyName = 'MenuButtonShim';

@@ -1,4 +1,3 @@
-// TODO: replace with real exports
 export {
   ButtonShim,
   ActionButtonShim,
@@ -8,4 +7,4 @@ export {
   MenuButtonShim,
   PrimaryButtonShim,
   ToggleButtonShim,
-} from './ButtonShim';
+} from './components/index';

@@ -1,0 +1,44 @@
+import * as React from 'react';
+
+import { PrimaryButton } from '@fluentui/react';
+import { FluentProvider, Button, webLightTheme, makeStyles, shorthands } from '@fluentui/react-components';
+import { PrimaryButtonShim } from '@fluentui/react-button-shim-v8-v9';
+
+const useStyles = makeStyles({
+  root: {
+    display: 'grid',
+    gridTemplateColumns: 'auto auto auto',
+    gridTemplateRows: '1fr',
+    width: 'fit-content',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyItems: 'center',
+    columnGap: '10px',
+    rowGap: '10px',
+  },
+  componentName: {
+    justifySelf: 'end',
+    ...shorthands.margin(0, '10px', 0, 0),
+  },
+});
+
+export const Default = () => {
+  const styles = useStyles();
+
+  return (
+    <div className={styles.root}>
+      <h3>v8</h3>
+      <h3>shim</h3>
+      <h3>v9</h3>
+      <PrimaryButton>Primary</PrimaryButton>
+      <FluentProvider theme={webLightTheme}>
+        <PrimaryButtonShim>Primary</PrimaryButtonShim>
+      </FluentProvider>
+      <FluentProvider theme={webLightTheme}>
+        <Button appearance="primary">Primary</Button>
+      </FluentProvider>
+    </div>
+  );
+};
+
+Default.storyName = 'PrimaryButtonShim';
