@@ -1,0 +1,82 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Concepts/Migration/Getting Started" />
+
+# Getting started with migration to v9
+
+If you or your team are considering migrating to Fluent UI React version 9 then
+we would first like to **_thank you_** and let you know how excited we are
+for you to experience all the improvements and features we have been working on.
+
+Avoid thinking of v9 and version bump upgrade from v0 or v8.
+Instead, think of migration as a process of adopting v9 components while still using v0/v8 components.
+There will be a hybrid stage where you use components from both versions as you phase out using the older version.
+Fluent UI React v9 was designed to be adopted incrementally and to live side-by-side with v0/v8 components.
+
+## Major changes and why we made them
+
+### Build-time styles and theme
+
+In previous versions, styles were created and applied at runtime.
+A theme object on React's context was accessed at runtime by components.
+
+In v9, styles are created at build time and class names are applied at runtime.
+A theme object is used to define CSS vars referenced by component styles.
+Version 9 uses [Griffel](https://griffel.js.org/).
+Griffel is a CSS-in-JS framework providing build-time transforms, atomic CSS, and type-safe styles.
+
+Moving to build-time styling, defining atomic CSS styles, and leveraging CSS vars significantly improves rendering performance.
+Styles can be optimized at build time to reduce bundle size.
+
+### Fluent 2 design language
+
+Fluent 2 is the next version of the Fluent design language.
+It defines a set of design tokens and themes that define a value for each token.
+These tokens are referenced when designing the layout and style for components.
+
+In previous versions, the theme object defined properties specific to component parts and state.
+For example, `inputTextHovered` would be the color of the text of an input component when the mouse hovers over it.
+While these provide fine-grained customization of component parts, it came at the cost of adding many new properties
+for each new component.
+
+In v9, the `FluentProvider` defines a CSS variable for each design token. Design tokens are specific to a general
+purpose usage and state. Colors are distinguished between neutral, brand, and shared color ramps.
+For example, `colorNeutralForeground2Hover` could the neutral color for an input component's text when the mouse hovers over it.
+
+Moving to the Fluent 2 design language supports a practical number of CSS variables that can be applied across
+components in the library without degrading performance. It also keeps
+
+### Declarative children
+
+In previous versions, props would be passed data to render. For example, v8's `ContextualMenuButton` `menuProps` prop
+would be passed a hierachy of menu items to render.
+
+In v9, most components support declaring the children as TSX/JSX elements. For example, `MenuList` can have `MenuItem`,
+`MenuDivider`, `MenuItemRadio`, etc. as children.
+
+TSX/JSX declarations within a component's children better supports ideomatic React development.
+
+- Children can be full-fledged components supporting data and event binding and access context.
+- Components don't have to provide render callbacks as child components render themselves.
+- Components can be extended with custom child types.
+- Components don't have to define more types to express hierarchy.
+- The caller controls React performance tuning techniques like memoization.
+
+### Slots
+
+In previous versions, components would define a callback to allow callers to customize how a header/footer, item,
+or content were rendered.
+
+In v9, components define slots that allow callers to replace specific parts of a component with their own component.
+See the _Developer/Customizing Components with Slots_ topic for more details.
+
+As a core part of the v9 architecture, slots a consistent extensibility mechanism across components.
+Each component can leverage the slots infrastructure rather than define its own unique render props.
+Slots are part of a progression of customization features in v9 from a custom theme, to custom styles, to slot replacement
+and finally to recomposition using hooks.
+
+## Expected challenges
+
+## Stages of migration
+
+## Migrating your first component
