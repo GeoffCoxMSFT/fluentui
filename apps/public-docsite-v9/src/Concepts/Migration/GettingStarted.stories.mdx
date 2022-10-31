@@ -8,75 +8,199 @@ If you or your team are considering migrating to Fluent UI React version 9 then
 we would first like to **_thank you_** and let you know how excited we are
 for you to experience all the improvements and features we have been working on.
 
-Avoid thinking of v9 and version bump upgrade from v0 or v8.
-Instead, think of migration as a process of adopting v9 components while still using v0/v8 components.
-There will be a hybrid stage where you use components from both versions as you phase out using the older version.
-Fluent UI React v9 was designed to be adopted incrementally and to live side-by-side with v0/v8 components.
-
 ## Major changes and why we made them
 
 ### Build-time styles and theme
 
 In previous versions, styles were created and applied at runtime.
-A theme object on React's context was accessed at runtime by components.
+A theme object on React context was used at runtime by component style methods.
 
-In v9, styles are created at build time and class names are applied at runtime.
-A theme object is used to define CSS vars referenced by component styles.
-Version 9 uses [Griffel](https://griffel.js.org/).
-Griffel is a CSS-in-JS framework providing build-time transforms, atomic CSS, and type-safe styles.
+In v9, styles are created at build time.
+Components apply class names at runtime.
+A theme object is used with `FluentProvider` to define CSS variables referenced by component styles.
 
-Moving to build-time styling, defining atomic CSS styles, and leveraging CSS vars significantly improves rendering performance.
-Styles can be optimized at build time to reduce bundle size.
+[Griffel](https://griffel.js.org/), a CSS-in-JS framework, provides build-time transforms, atomic CSS, and type-safe styles for v9.
+
+Build-time styles significantly improves rendering performance and can be optimized to reduce bundle size.
 
 ### Fluent 2 design language
 
 Fluent 2 is the next version of the Fluent design language.
-It defines a set of design tokens and themes that define a value for each token.
-These tokens are referenced when designing the layout and style for components.
+It defines a set of design tokens and themes consisting of a value for each token.
+These tokens are referenced in the designs for the layout and style for components.
 
-In previous versions, the theme object defined properties specific to component parts and state.
-For example, `inputTextHovered` would be the color of the text of an input component when the mouse hovers over it.
-While these provide fine-grained customization of component parts, it came at the cost of adding many new properties
-for each new component.
+In previous Fluent UI React versions, the theme object defined properties specific to component parts and state.
+For example, `inputTextHovered` would be the color of an input component's text when the mouse hovers over it.
+Adding a new component meant adding several new theme properties.
+As the number of theme properties grows, theme customization and maintenance becomes more costly.
 
-In v9, the `FluentProvider` defines a CSS variable for each design token. Design tokens are specific to a general
-purpose usage and state. Colors are distinguished between neutral, brand, and shared color ramps.
-For example, `colorNeutralForeground2Hover` could the neutral color for an input component's text when the mouse hovers over it.
+In v9, the `FluentProvider` defines a CSS variable for each design token.
+Design tokens are for general purpose usage and state.
+Colors are distinguished between neutral, brand, and shared color ramps.
+For example, `colorNeutralForeground2Hover` could be used for an input component's text when the mouse hovers over it.
 
-Moving to the Fluent 2 design language supports a practical number of CSS variables that can be applied across
-components in the library without degrading performance. It also keeps
+Moving to the Fluent 2 design language provides a practical number of CSS variables for all components without degrading performance.
 
 ### Declarative children
 
-In previous versions, props would be passed data to render. For example, v8's `ContextualMenuButton` `menuProps` prop
-would be passed a hierachy of menu items to render.
+In previous versions, props would be passed data shapes to process and render as children.
+For example, v8's `ContextualMenuButton` `menuProps` prop would be passed a hierarchy of menu items to render.
+It was the component's responsibility to render each child.
+Components often exposed callbacks allowing callers to override rendering of children.
 
-In v9, most components support declaring the children as TSX/JSX elements. For example, `MenuList` can have `MenuItem`,
-`MenuDivider`, `MenuItemRadio`, etc. as children.
+In v9, most components support declaring the children as TSX/JSX elements.
+For example, `MenuList` can have `MenuItem`, `MenuDivider`, `MenuItemRadio`, etc. as children.
+Component children are responsible for rendering themselves.
 
-TSX/JSX declarations within a component's children better supports ideomatic React development.
+Declarative children provides idiomatic React development.
 
 - Children can be full-fledged components supporting data and event binding and access context.
 - Components don't have to provide render callbacks as child components render themselves.
 - Components can be extended with custom child types.
-- Components don't have to define more types to express hierarchy.
-- The caller controls React performance tuning techniques like memoization.
+- Components don't have to define additional types to express hierarchy.
+- The caller controls React performance tuning techniques like memoization and lazy loading.
 
 ### Slots
 
-In previous versions, components would define a callback to allow callers to customize how a header/footer, item,
-or content were rendered.
+In previous versions, components would expose a callback to allow callers to customize how a component part (e.g. header, footer, item,
+content) were rendered.
 
-In v9, components define slots that allow callers to replace specific parts of a component with their own component.
+In v9, components define slot props that allow callers to replace specific parts of a component with their own component.
 See the _Developer/Customizing Components with Slots_ topic for more details.
 
-As a core part of the v9 architecture, slots a consistent extensibility mechanism across components.
-Each component can leverage the slots infrastructure rather than define its own unique render props.
-Slots are part of a progression of customization features in v9 from a custom theme, to custom styles, to slot replacement
-and finally to recomposition using hooks.
+As a core part of the v9 architecture, slots provide a consistent extensibility mechanism across components.
+Components no longer need to define their own unique render prop callbacks.
+Slots provide greater flexibility as they accept literals, TSX/JSX, or render functions.
 
 ## Expected challenges
 
+Avoid thinking of v9 as a version bump upgrade from v0 or v8.
+Instead, think of migration as a process of adopting v9 components while still using v0/v8 components.
+There will be a hybrid period where you use components from both versions as you phase out older components.
+
+Depending on how you've used previous versions, you will encounter some migration challenges.
+The good news is that Fluent UI React v9 was designed to be adopted incrementally and used side-by-side with v0/v8 components.
+
+### Theme differences
+
+v0/v8, and v9 have some theme differences. You will need to decide if you are okay living with these visual differences,
+want to have everything keep looking like the previous version, or have everything look like v9.
+
+ThemeProvider (v0/v8) and FluentProvider (v9) can be used around the same hierarchy of components.
+You can create and pass themes to them to make them looks very similar.
+We have created some helpful theme shim methods to create v8 style v9 themes, and v9 style v8 themes.
+
+### Style differences
+
+Version 9 uses `makeStyles` and `mergeClasses` and leverages CSS variables for theme.
+Components no longer have a custom styles prop, a runtime theme object on React context, or default SASS support.
+
+We recommend using the default styling of components and avoid custom styles that deviate from the Fluent 2 design.
+The default styles provides a high-performance, compatible, and accessible experience that will be consistent and familiar across products.
+
+If you have deeply customized the styles of previous components and must bring them forward, you will need to
+either translate those styles into `makeStyles` calls, replace a component part with your own using slots,
+or recompose the component to replace the styles hook with your own.
+
+If you have deeply customized styles using an external style system (e.g. LESS, SASS), you can continue to apply CSS styles
+globally.
+You will need to update the selectors to match the new components.
+We recommend against this as you will take a tightly bound dependency on the component's elements and any CSS pseudo-elements.
+
+### Bundle size increase
+
+Version 9 consists of a new set of components supported by new infrastructure.
+Depending on both v9 and a previous version simultaneously will increase bundle size and may take a little longer to download.
+
+If bundle size is important to you, you will need to plan your migration to fully replace some components to allow
+tree shaking to remove older components from the bundle.
+
+### Props changes
+
+New components have some prop contract changes from previous versions.
+Where you use previous components, you will need to update code in order to pass props to new components.
+Where data props have changed to TSX/JSX children, you will need to write a map function to create the children
+or replace the data structure with children directly.
+
+We recommend you try and make the necessary updates in your codebase directly.
+
+If you find that to be too much effort, you can consider
+
+- using a shim component to defer the work for awhile
+- refactoring your code to call component that "wraps" the Fluent component using the hooks composition model
+- writing a code mod script to make automated updates across your codebase
+
+You may also need to make adjustments to your build process to handle depending on both versions.
+
+### Build updates
+
+You may need to update your build system tooling and configuration when adopting v9 in order to
+get the most advantage from tree-shaking, CSS bundling and minification, and browser-matrix compatibility.
+
 ## Stages of migration
 
+If you have a large codebase, it will be critical that you plan your migration into stages.
+
+Here are the stages we think most will follow:
+
+1. Get familiar with v9
+
+Read the documentation, try using several components, and inspect the resulting HTML and CSS.
+Take a look at our road-map to understand when new v9 components will be shipping and which previous components
+you will need to continue using for now.
+
+2. Assess your application
+
+Analyze your codebase to measure how many places you use Fluent UI, how much custom styling you do,
+how much complex data-binding you do, and what architectural abstractions you have in place.
+
+3. Decide when to migrate (milestones)
+
+Consider how you might flight using new components for both your application and your build system.
+
+Decide if you want to migrate your entire codebase at once, migrate a single component type (i.e. horizontal migration),
+or migrate all components in a single experience or page (i.e. vertical migration).
+
+Plan out some milestones where you can verify all your tests pass, you meet your performance benchmarks, and you
+can confidently ship using new components.
+
+4. Migrate some experiences/components
+
+We recommend migrating `Button` as your first component. It tends to be used across an application, has a straightforward
+interface, and provides performance improvements. Updating `ContextualMenuButton` to `MenuButton` will expose you to
+converting from data structures to declarative children.
+
+Record how much effort each replacement requires and use this information when planning out future component migrations.
+Monitor bundle size, build time, and render performance as you adopt v9.
+
+5. Build new experiences in v9
+
+If you are adding new experiences and features to your product, we strongly recommend building them against v9.
+Otherwise, you are incurring more migration debt in the future.
+You will get to use v9's simpler props, more powerful slots, and richer theme without the baggage of previous version thinking.
+
+6. Incrementally migrate core experiences
+
+Plan out a rinse-and-repeat plan to migrate your core experiences to v9.
+From previous stages, you should feel confident handling any migration challenges.
+
+7. Migrate the remaining long tail
+
+Build a list of the remaining v8 components and check against the road-map to see when there will be v9 replacements.
+Consider building a replacement component using the v9 hooks composition model and new styling system.
+Fluent UI React is open source and we welcome contributions!
+
 ## Migrating your first component
+
+We'll use `Button` as an example. The steps are relatively straightforward:
+
+1. Locate all the usages of Button you want to replace (e.g. ActionButton, PrimaryButton, SplitButton)
+2. Add @fluentui/react-components to the corresponding package.json files.
+3. Update the corresponding import statements for Button from @fluentui/react to @fluentui/react-components
+4. At each place you use Button, update the props to match v9.
+   For example, &lt;PrimaryButton&gt; would be replaced with &lt;Button appearance="primary" &gt;
+5. Wherever you are using `ThemeProvider`, add `FluentProvider` and set the `theme` (e.g. webLightTheme).
+6. Build and test
+
+You can use the migration documentation for each component to understand the props that have carried forward,
+changes, or been removed between versions.
