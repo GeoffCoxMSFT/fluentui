@@ -111,7 +111,7 @@
     "@swc/helpers": "0.5.1",
     "@swc/jest": "0.2.36",
     "@testing-library/dom": "8.11.3",
-    "@testing-library/jest-dom": "5.16.5",
+    "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "12.1.2",
     "@testing-library/react-hooks": "8.0.1",
     "@testing-library/user-event": "13.5.0",
