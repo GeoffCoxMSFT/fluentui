@@ -193,7 +193,7 @@
     "chrome-remote-interface": "0.28.2",
     "ci-info": "3.8.0",
     "circular-dependency-plugin": "5.2.2",
-    "clean-css": "4.2.3",
+    "clean-css": "5.3.3",
     "clean-webpack-plugin": "4.0.0",
     "connect-history-api-fallback": "1.6.0",
     "copy-webpack-plugin": "12.0.2",
